@@ -30,4 +30,4 @@ Reference: https://developers.cloudflare.com/pages/framework-guides/deploy-anyth
 
 This is a first design direction for the studio's event photobooth and videography services. The header pairs the Archivo wordmark with the selected Bar and bowl lens-study concept. The raster concept is framed with CSS to show its symbol; a final vector master remains to be developed. Colour hex values are proposed interpretations of the named tokens, not supplied brand values.
 
-Edit copy in `public/index.html` and design tokens in `public/styles.css`. Keep only one contact action. The favicon uses the interim green brand dot.
+Edit copy in `public/index.html` and design tokens in `public/styles.css`. Keep only one contact action. The SVG favicon uses a simplified Bar and bowl mark for clarity at small sizes.
