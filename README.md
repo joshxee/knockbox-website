@@ -1,6 +1,6 @@
 # Knockbox Studios
 
-A single-page, buildless site. Plain HTML and CSS; no JavaScript or runtime dependencies. The only action opens an email to info@knockbox.nz in the visitor's email application. Google Fonts supplies Archivo for the wordmark and Asap for page text and labels, with local fallbacks.
+A single-page, buildless site. Plain HTML and CSS; no JavaScript or runtime dependencies. The primary action opens an email to info@knockbox.nz in the visitor's email application. The footer links to Instagram at @knockboxstudio. Google Fonts supplies Archivo for the wordmark and Asap for page text and labels, with local fallbacks.
 
 ## Preview
 
