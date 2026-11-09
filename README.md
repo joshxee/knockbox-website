@@ -12,6 +12,10 @@ python -m http.server 4173 --bind 127.0.0.1 --directory public
 
 Visit http://127.0.0.1:4173.
 
+## Preview builds
+
+`wrangler.jsonc` configures the `knockbox-website` Worker (static assets from `public`) and enables Worker Previews. Pushing any branch other than the production branch runs the build command and then `npx wrangler preview`, which publishes a Preview URL for that branch under the Worker's **Previews** section in the Cloudflare dashboard.
+
 ## Cloudflare Pages
 
 Import this repository into a Cloudflare Pages project:

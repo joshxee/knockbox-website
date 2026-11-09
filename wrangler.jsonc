@@ -1,0 +1,13 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  // Must match the deployed Worker, so production deploys keep targeting it.
+  "name": "knockbox-website",
+  "compatibility_date": "2026-10-19",
+  "assets": {
+    "directory": "./public"
+  },
+  // Preview URLs for branch builds (Workers Builds runs `npx wrangler preview`).
+  "preview_urls": true,
+  // Required by `wrangler preview`. Empty: previews use the top-level settings (a static site has no bindings).
+  "previews": {}
+}
