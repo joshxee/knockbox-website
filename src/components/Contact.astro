@@ -1,0 +1,97 @@
+---
+import { Image } from 'astro:assets';
+import Icon from './Icon.astro';
+import { enquiryHref, featured, site } from '../data/events';
+---
+<section id="contact" class="section contact" aria-labelledby="contact-title">
+  <div class="wrap">
+    <div class="panel" data-reveal>
+      <div class="copy">
+        <p class="eyebrow">Planning an event?</p>
+        <h2 id="contact-title" class="h2">Tell us what’s <span class="accent">happening.</span></h2>
+        <p class="lead">Send us the date, the place and what you have in mind. We’ll take it from there.</p>
+        <div class="ctas">
+          <a class="btn btn--paper" href={enquiryHref}><Icon name="mail" /> Email us</a>
+          <button class="btn btn--outline copy-btn" type="button" data-copy={site.email}>
+            <span class="copy-label"><Icon name="copy" /> {site.email}</span>
+            <span class="copied-label" aria-hidden="true"><Icon name="check" /> Copied</span>
+          </button>
+          <span class="visually-hidden" role="status" data-copy-status></span>
+        </div>
+      </div>
+      <figure class="print snap" aria-hidden="true">
+        <Image src={featured.prep.src} alt="" widths={[320, 480, 640]} sizes="(min-width: 60rem) 22rem, 70vw" />
+      </figure>
+    </div>
+  </div>
+</section>
+
+<style>
+  .panel {
+    position: relative;
+    display: grid;
+    gap: var(--space-2xl);
+    padding: clamp(2rem, 1.2rem + 4vw, 5rem);
+    border-radius: var(--radius-lg);
+    background: var(--green);
+    color: var(--on-green);
+    overflow: hidden;
+  }
+  .panel::before {
+    /* faint bar-and-bowl watermark */
+    content: '';
+    position: absolute;
+    right: -6rem;
+    bottom: -7rem;
+    width: 26rem;
+    aspect-ratio: 56 / 40;
+    background: rgb(255 255 255 / 0.05);
+    -webkit-mask: url('/brand-mark.svg') center / contain no-repeat;
+    mask: url('/brand-mark.svg') center / contain no-repeat;
+  }
+  .copy { position: relative; display: grid; gap: var(--space-md); justify-items: start; }
+  .eyebrow { color: var(--on-green-soft); }
+  .eyebrow::before { background: var(--sun); }
+  h2 { color: var(--on-green); }
+  .lead { color: var(--on-green-soft); }
+  .ctas { display: flex; flex-wrap: wrap; gap: var(--space-sm); margin-top: var(--space-sm); }
+  .btn--outline { --btn-bg: transparent; --btn-fg: var(--on-green); box-shadow: inset 0 0 0 1.5px rgb(243 239 227 / 0.35); }
+  .btn--outline:hover { box-shadow: inset 0 0 0 1.5px var(--on-green); }
+  .copy-btn { display: inline-grid; }
+  .copy-btn > span { grid-area: 1 / 1; display: inline-flex; align-items: center; justify-content: center; gap: 0.5em; transition: opacity 200ms ease, transform 300ms var(--ease-out); }
+  .copied-label { opacity: 0; transform: translateY(0.4rem); }
+  .copy-btn.is-copied .copy-label { opacity: 0; transform: translateY(-0.4rem); }
+  .copy-btn.is-copied .copied-label { opacity: 1; transform: none; }
+  .btn:focus-visible { outline-color: var(--on-green); }
+  .text-link { color: var(--on-green); }
+
+  .snap {
+    position: relative;
+    width: min(78%, 20rem);
+    justify-self: center;
+    transform: rotate(4deg);
+  }
+  .snap :global(img) { aspect-ratio: 4 / 5; }
+
+  @media (min-width: 60rem) {
+    .panel { grid-template-columns: 1.4fr 1fr; align-items: center; }
+    .snap { width: 100%; max-width: 20rem; justify-self: end; margin-block: -1rem; }
+  }
+</style>
+
+<script>
+  document.querySelectorAll<HTMLButtonElement>('[data-copy]').forEach((btn) => {
+    const status = btn.parentElement?.querySelector<HTMLElement>('[data-copy-status]');
+    btn.addEventListener('click', async () => {
+      const value = btn.dataset.copy ?? '';
+      try {
+        await navigator.clipboard.writeText(value);
+        btn.classList.add('is-copied');
+        if (status) status.textContent = `Copied ${value} to clipboard`;
+        setTimeout(() => btn.classList.remove('is-copied'), 2200);
+      } catch {
+        window.location.href = `mailto:${value}`;
+      }
+    });
+  });
+</script>

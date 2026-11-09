@@ -1,0 +1,105 @@
+---
+import { Image } from 'astro:assets';
+import { featured } from '../../data/events';
+
+const steps = [
+  {
+    title: 'Gesture to start',
+    body: 'A simple gesture starts the booth, so anyone can jump straight in. No one needs a lesson.',
+    photo: featured.steps.gesture,
+  },
+  {
+    title: 'Strike a pose',
+    body: 'Grab your people and make it count. Every shot comes out high quality.',
+    photo: featured.steps.pose,
+  },
+  {
+    title: 'Scan and share',
+    body: 'Photos land in the live guest gallery instantly. Scan the code to download and share from your phone.',
+    photo: featured.steps.share,
+  },
+];
+---
+<section id="how-it-works" class="section" aria-labelledby="how-title">
+  <div class="wrap">
+    <div class="section-head" data-reveal>
+      <p class="eyebrow">How it works</p>
+      <h2 id="how-title" class="h2">Three steps. <span class="accent">No instructions</span> needed.</h2>
+    </div>
+
+    <ol class="steps">
+      {steps.map((s, i) => (
+        <li class="step" data-reveal style={`--reveal-delay:${i}`}>
+          <div class="media">
+            <Image
+              src={s.photo.src}
+              alt={s.photo.alt}
+              widths={[360, 540, 720]}
+              sizes="(min-width: 60rem) 30vw, (min-width: 40rem) 45vw, 90vw"
+            />
+            <span class="num" aria-hidden="true">{String(i + 1).padStart(2, '0')}</span>
+          </div>
+          <div class="text">
+            <h3 class="h3">{s.title}</h3>
+            <p>{s.body}</p>
+          </div>
+        </li>
+      ))}
+    </ol>
+  </div>
+</section>
+
+<style>
+  .steps {
+    list-style: none;
+    padding: 0;
+    display: grid;
+    gap: var(--space-md);
+  }
+  .step {
+    display: grid;
+    gap: var(--space-lg);
+    padding: var(--space-sm) var(--space-sm) var(--space-xl);
+    border-radius: var(--radius-lg);
+    background: var(--card);
+    box-shadow: inset 0 0 0 1px var(--line);
+  }
+  .media { position: relative; overflow: hidden; border-radius: calc(var(--radius-lg) - var(--space-sm)); }
+  .media :global(img) {
+    width: 100%;
+    aspect-ratio: 4 / 3;
+    object-fit: cover;
+    transition: transform 900ms var(--ease-out);
+  }
+  .step:nth-child(3) .media :global(img) { object-position: 50% 62%; }
+  .step:hover .media :global(img) { transform: scale(1.04); }
+  .num {
+    position: absolute;
+    top: var(--space-sm);
+    left: var(--space-sm);
+    display: grid;
+    place-items: center;
+    min-width: 2.75rem;
+    height: 2.75rem;
+    padding-inline: 0.6rem;
+    border-radius: var(--pill);
+    background: var(--paper);
+    color: var(--ink);
+    font-size: var(--text-sm);
+    font-weight: 650;
+    font-variant-numeric: tabular-nums;
+    letter-spacing: 0.02em;
+  }
+  .text { display: grid; gap: var(--space-xs); padding-inline: var(--space-md); }
+  .text p { max-width: 30rem; }
+
+  @media (min-width: 40rem) {
+    .steps { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .step:last-child { grid-column: 1 / -1; grid-template-columns: 1fr 1fr; align-items: center; padding-bottom: var(--space-sm); }
+  }
+  @media (min-width: 60rem) {
+    .steps { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--space-lg); }
+    .step:last-child { grid-column: auto; grid-template-columns: none; align-items: start; padding-bottom: var(--space-xl); }
+    .media :global(img) { aspect-ratio: 4 / 4.4; }
+  }
+</style>

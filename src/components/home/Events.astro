@@ -1,0 +1,52 @@
+---
+import EventCard from '../EventCard.astro';
+import { events } from '../../data/events';
+---
+<section id="events" class="section" aria-labelledby="events-title">
+  <div class="wrap">
+    <div class="section-head" data-reveal>
+      <p class="eyebrow">Past events</p>
+      <h2 id="events-title" class="h2">Real guests, <span class="accent">real moments.</span></h2>
+      <p class="lead">From awards nights to weddings. Open an event to see the full set from the booth.</p>
+    </div>
+  </div>
+
+  <div class="rail-wrap">
+    <ul class="rail wrap" aria-label="Past events">
+      {events.map((e, i) => (
+        <li data-reveal style={`--reveal-delay:${i}`}><EventCard event={e} /></li>
+      ))}
+    </ul>
+  </div>
+</section>
+
+<style>
+  /* Mobile: a swipeable rail that peeks the next card. Desktop: a grid. */
+  .rail {
+    list-style: none;
+    display: grid;
+    grid-auto-flow: column;
+    grid-auto-columns: min(82%, 22rem);
+    gap: var(--space-md);
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    scroll-snap-type: x mandatory;
+    scroll-padding-inline: var(--gutter);
+    scrollbar-width: none;
+    padding-bottom: var(--space-xs);
+  }
+  .rail::-webkit-scrollbar { display: none; }
+  .rail li { scroll-snap-align: start; }
+
+  @media (min-width: 40rem) {
+    .rail { grid-auto-columns: min(46%, 24rem); }
+  }
+  @media (min-width: 60rem) {
+    .rail {
+      grid-auto-flow: row;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: var(--space-lg);
+      overflow: visible;
+    }
+  }
+</style>

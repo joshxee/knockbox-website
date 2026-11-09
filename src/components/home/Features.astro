@@ -1,0 +1,167 @@
+---
+import { Image } from 'astro:assets';
+import Icon from '../Icon.astro';
+import { featured } from '../../data/events';
+---
+<section id="features" class="section" aria-labelledby="features-title">
+  <div class="wrap">
+    <div class="section-head" data-reveal>
+      <p class="eyebrow">The booth</p>
+      <h2 id="features-title" class="h2">Built for the night, <span class="accent">and the morning after.</span></h2>
+      <p class="lead">Everything guests need to take, find and keep their photos, all in one place.</p>
+    </div>
+
+    <div class="bento">
+      <article class="card venue" data-reveal>
+        <Image
+          src={featured.setup.src}
+          alt={featured.setup.alt}
+          widths={[480, 720, 960, 1280]}
+          sizes="(min-width: 60rem) 52vw, 92vw"
+          class="venue-img"
+        />
+        <div class="venue-copy">
+          <h3 class="h3">Fits into any venue</h3>
+          <p>Lightweight and easy to bring in. Just add power and Wi-Fi.</p>
+        </div>
+      </article>
+
+      <article class="card gallery" data-reveal style="--reveal-delay:1">
+        <div class="gallery-copy">
+          <h3 class="h3">A live guest gallery</h3>
+          <p>Photos appear instantly in the guest web portal. Find your favourites and see how everyone else is striking a pose.</p>
+        </div>
+        <div class="phone" aria-hidden="true">
+          <div class="phone-bar"><span class="dot"></span>Live gallery</div>
+          <div class="phone-grid">
+            {featured.gallery.map((src) => (
+              <Image src={src} alt="" widths={[160, 320]} sizes="8rem" />
+            ))}
+          </div>
+        </div>
+      </article>
+
+      <article class="card share" data-reveal style="--reveal-delay:2">
+        <span class="badge"><Icon name="download" /></span>
+        <h3 class="h3">Download and share</h3>
+        <p>Guests save their photos and share them to social media, straight from their phone.</p>
+      </article>
+
+      <article class="card edits" data-reveal style="--reveal-delay:3">
+        <span class="badge"><Icon name="sparkle" /></span>
+        <h3 class="h3">Edited versions after</h3>
+        <p>Want the keepers polished? We can also provide professionally edited versions after the event.</p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<style>
+  .bento { display: grid; gap: var(--space-md); }
+  .card {
+    position: relative;
+    display: grid;
+    gap: var(--space-xs);
+    align-content: start;
+    padding: clamp(1.5rem, 1.1rem + 1.6vw, 2.5rem);
+    border-radius: var(--radius-lg);
+    background: var(--card);
+    box-shadow: inset 0 0 0 1px var(--line);
+    overflow: hidden;
+  }
+  .card p { max-width: 28rem; }
+
+  /* Venue: full-bleed photo with copy on a soft scrim */
+  .venue { padding: 0; min-height: 26rem; align-content: end; background: var(--ink); }
+  .venue :global(.venue-img) {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: 50% 70%;
+  }
+  .venue::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, rgb(16 22 18 / 0.88) 0%, rgb(16 22 18 / 0.35) 45%, transparent 70%);
+  }
+  .venue-copy { position: relative; z-index: 1; display: grid; gap: var(--space-xs); padding: clamp(1.5rem, 1.1rem + 1.6vw, 2.5rem); }
+  .venue h3, .venue p { color: #fff; }
+  .venue p { opacity: 0.86; }
+
+  /* Gallery: deep green with a phone */
+  .gallery { background: var(--green-deep); box-shadow: none; padding-bottom: 0; gap: var(--space-xl); }
+  .gallery h3 { color: var(--on-green); }
+  .gallery p { color: var(--on-green-soft); }
+  .gallery-copy { display: grid; gap: var(--space-xs); }
+  .phone {
+    justify-self: center;
+    width: min(100%, 17rem);
+    margin-bottom: -2.5rem;
+    padding: 0.6rem 0.6rem 3rem;
+    border-radius: 2.25rem 2.25rem 0 0;
+    background: #0d1a12;
+    box-shadow: 0 0 0 1px rgb(255 255 255 / 0.08), 0 30px 60px -20px rgb(0 0 0 / 0.6);
+  }
+  .phone-bar {
+    display: flex;
+    align-items: center;
+    gap: 0.45rem;
+    padding: 0.85rem 0.9rem 0.7rem;
+    border-radius: 1.75rem 1.75rem 0 0;
+    background: var(--paper);
+    color: var(--ink);
+    font-size: 0.75rem;
+    font-weight: 650;
+  }
+  .dot { width: 0.5rem; height: 0.5rem; border-radius: 50%; background: var(--clay); animation: pulse 1.8s ease-in-out infinite; }
+  @keyframes pulse { 50% { opacity: 0.35; } }
+  .phone-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.3rem;
+    padding: 0 0.45rem 0.45rem;
+    background: var(--paper);
+  }
+  .phone-grid :global(img) { width: 100%; aspect-ratio: 1; object-fit: cover; border-radius: 0.4rem; }
+
+  .badge {
+    display: grid;
+    place-items: center;
+    width: 2.75rem;
+    height: 2.75rem;
+    margin-bottom: var(--space-lg);
+    border-radius: 50%;
+  }
+  .badge :global(svg) { width: 1.3rem; height: 1.3rem; }
+  .share { background: var(--paper-deep); box-shadow: none; }
+  .share .badge { background: var(--green); color: var(--on-green); }
+  .edits { background: var(--sun); box-shadow: none; }
+  .edits p { color: #3d3a2c; }
+  .edits .badge { background: var(--ink); color: var(--sun); }
+
+  @media (min-width: 40rem) {
+    .bento { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .venue, .gallery { grid-column: 1 / -1; }
+    .gallery { grid-template-columns: 1fr 1fr; align-items: end; padding-top: 0; }
+    .gallery-copy { align-self: center; padding-block: 2.5rem; }
+  }
+  @media (min-width: 60rem) {
+    .bento {
+      grid-template-columns: repeat(12, minmax(0, 1fr));
+      grid-template-areas:
+        'v v v v v v v g g g g g'
+        's s s s e e e g g g g g';
+      gap: var(--space-lg);
+    }
+    .venue { grid-area: v; min-height: 30rem; }
+    .gallery { grid-area: g; grid-template-columns: none; align-items: start; padding-top: clamp(1.5rem, 1.1rem + 1.6vw, 2.5rem); }
+    .gallery-copy { padding-block: 0; }
+    .gallery { align-content: space-between; }
+    .share { grid-area: s; }
+    .edits { grid-area: e; }
+    .phone { align-self: end; }
+  }
+</style>

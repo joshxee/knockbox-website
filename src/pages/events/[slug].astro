@@ -1,0 +1,288 @@
+---
+import type { GetStaticPaths } from 'astro';
+import { Image, getImage } from 'astro:assets';
+import Layout from '../../layouts/Layout.astro';
+import Icon from '../../components/Icon.astro';
+import EventCard from '../../components/EventCard.astro';
+import Contact from '../../components/Contact.astro';
+import { events, type EventStory, type Photo } from '../../data/events';
+
+export const getStaticPaths = (() =>
+  events.map((event) => ({ params: { slug: event.slug }, props: { event } }))) satisfies GetStaticPaths;
+
+interface Props { event: EventStory }
+const { event } = Astro.props;
+const others = events.filter((e) => e.slug !== event.slug);
+
+// Full-size versions for the lightbox (and for no-JS links).
+const withFull = async (photos: Photo[]) =>
+  Promise.all(
+    photos.map(async (p) => {
+      const full = await getImage({ src: p.src, width: Math.min(p.src.width, 2000), format: 'webp', quality: 82 });
+      return { ...p, full: full.src };
+    }),
+  );
+const photos = await withFull(event.photos);
+const setup = event.setup ? await withFull(event.setup) : [];
+const all = [...photos, ...setup];
+---
+<Layout title={`${event.title} — Knockbox Studios`} description={event.summary}>
+  <article>
+    <header class="event-hero">
+      <div class="wrap">
+        <a class="back text-link" href="/#events"><Icon name="arrow-left" /> All events</a>
+        <div class="title-row">
+          <div class="titles">
+            <p class="eyebrow">{event.kind}</p>
+            <h1 class="display">{event.title}</h1>
+          </div>
+          <div class="intro">
+            <p class="lead">{event.summary}</p>
+            <p class="meta">{photos.length} guest photos{setup.length > 0 && ` · ${setup.length} behind the scenes`}</p>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <section class="wrap" aria-label="Guest photos">
+      <ul class="gallery">
+        {photos.map((p, i) => (
+          <li class:list={[{ wide: i === 0 }]}>
+            <a class="shot" href={p.full} data-lightbox={i}>
+              <Image
+                src={p.src}
+                alt={p.alt}
+                widths={[360, 540, 720, 1080, 1440]}
+                sizes={i === 0 ? '(min-width: 60rem) 66vw, 92vw' : '(min-width: 60rem) 32vw, 46vw'}
+                loading={i < 3 ? 'eager' : 'lazy'}
+              />
+              <span class="zoom" aria-hidden="true"><Icon name="plus" /></span>
+            </a>
+          </li>
+        ))}
+      </ul>
+    </section>
+
+    {setup.length > 0 && (
+      <section class="wrap setup" aria-labelledby="setup-title">
+        <div class="section-head">
+          <p class="eyebrow">Behind the scenes</p>
+          <h2 id="setup-title" class="h2">Setting the <span class="accent">stage.</span></h2>
+        </div>
+        <ul class="setup-grid">
+          {setup.map((p, i) => (
+            <li>
+              <figure>
+                <a class="shot" href={p.full} data-lightbox={photos.length + i}>
+                  <Image src={p.src} alt={p.alt} widths={[360, 540, 720, 1080]} sizes="(min-width: 60rem) 32vw, 92vw" />
+                  <span class="zoom" aria-hidden="true"><Icon name="plus" /></span>
+                </a>
+                {p.caption && <figcaption>{p.caption}</figcaption>}
+              </figure>
+            </li>
+          ))}
+        </ul>
+      </section>
+    )}
+  </article>
+
+  <section class="section more" aria-labelledby="more-title">
+    <div class="wrap">
+      <div class="section-head">
+        <p class="eyebrow">More events</p>
+        <h2 id="more-title" class="h2">More <span class="accent">good times.</span></h2>
+      </div>
+      <ul class="more-grid">
+        {others.map((e) => <li><EventCard event={e} /></li>)}
+      </ul>
+    </div>
+  </section>
+
+  <Contact />
+
+  <dialog class="lightbox" aria-label="Photo viewer" data-lightbox-dialog>
+    <div class="lb-stage">
+      <img class="lb-img" alt="" data-lb-img hidden />
+    </div>
+    <p class="lb-caption"><span data-lb-count></span><span data-lb-alt></span></p>
+    <button class="lb-btn lb-close" type="button" data-lb-close><Icon name="close" label="Close" /></button>
+    <button class="lb-btn lb-prev" type="button" data-lb-prev><Icon name="arrow-left" label="Previous photo" /></button>
+    <button class="lb-btn lb-next" type="button" data-lb-next><Icon name="arrow-right" label="Next photo" /></button>
+  </dialog>
+  <script is:inline type="application/json" id="lightbox-data" set:html={JSON.stringify(all.map((p) => ({ src: p.full, alt: p.alt })))}></script>
+</Layout>
+
+<style>
+  .event-hero { padding-block: clamp(1.5rem, 1rem + 2vw, 3rem) clamp(2rem, 1.5rem + 3vw, 4rem); }
+  .back { font-size: var(--text-sm); }
+  .back :global(svg) { width: 1rem; height: 1rem; }
+  .title-row { display: grid; gap: var(--space-xl); margin-top: clamp(2rem, 1.5rem + 3vw, 4rem); }
+  .titles { display: grid; gap: var(--space-md); }
+  .intro { display: grid; gap: var(--space-sm); align-content: end; }
+  .meta { color: var(--ink-faint); font-size: var(--text-sm); }
+
+  .gallery, .setup-grid, .more-grid { list-style: none; padding: 0; display: grid; gap: var(--space-sm); }
+  .gallery { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-xs); }
+  .gallery .wide { grid-column: 1 / -1; }
+  .shot { position: relative; display: block; overflow: hidden; border-radius: var(--radius); background: var(--paper-deep); }
+  .shot :global(img) { width: 100%; height: 100%; aspect-ratio: 3 / 2; object-fit: cover; transition: transform 900ms var(--ease-out); }
+  .shot:hover :global(img) { transform: scale(1.03); }
+  .zoom {
+    position: absolute;
+    right: var(--space-sm);
+    bottom: var(--space-sm);
+    display: grid;
+    place-items: center;
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: 50%;
+    background: var(--paper);
+    color: var(--ink);
+    opacity: 0;
+    transform: scale(0.8);
+    transition: opacity 250ms ease, transform 350ms var(--ease-out);
+  }
+  .zoom :global(svg) { width: 1.1rem; height: 1.1rem; }
+  .shot:hover .zoom, .shot:focus-visible .zoom { opacity: 1; transform: none; }
+
+  .setup { margin-top: var(--section); }
+  .setup-grid :global(img) { aspect-ratio: 4 / 5; }
+  figcaption { margin-top: var(--space-sm); color: var(--ink-faint); font-size: var(--text-sm); }
+
+
+  @media (min-width: 40rem) { .gallery { gap: var(--space-sm); } }
+  @media (min-width: 40rem) {
+    .setup-grid, .more-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-lg); }
+    .setup-grid li:first-child { grid-column: 1 / -1; }
+    .setup-grid li:first-child :global(img) { aspect-ratio: 16 / 9; }
+  }
+  @media (min-width: 60rem) {
+    .title-row { grid-template-columns: 1.3fr 1fr; align-items: end; gap: var(--space-3xl); }
+    .gallery { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--space-md); }
+    .gallery .wide { grid-column: span 2; grid-row: span 2; }
+    .setup-grid { grid-template-columns: 2fr 1fr 1fr; }
+    .setup-grid li:first-child { grid-column: auto; }
+    .setup-grid li:first-child :global(img) { aspect-ratio: auto; height: 100%; }
+    .setup-grid li:first-child figure { display: grid; grid-template-rows: 1fr auto; height: 100%; }
+  }
+
+  /* Lightbox ---------------------------------------------------------------- */
+  .lightbox {
+    width: 100vw;
+    height: 100dvh;
+    max-width: none;
+    max-height: none;
+    padding: 0;
+    border: 0;
+    background: #0c110e;
+    color: var(--on-green);
+    overscroll-behavior: contain;
+  }
+  .lightbox[open] { display: grid; grid-template-rows: 1fr auto; animation: lb-in 300ms var(--ease-out); }
+  .lightbox::backdrop { background: transparent; }
+  @keyframes lb-in { from { opacity: 0; } }
+  .lb-stage { display: grid; place-items: center; min-height: 0; padding: 4.5rem var(--gutter) 0; touch-action: pan-y; }
+  .lb-img { max-width: 100%; max-height: 100%; width: auto; height: auto; object-fit: contain; border-radius: var(--radius-sm); }
+  .lb-caption {
+    display: flex;
+    gap: var(--space-md);
+    justify-content: center;
+    padding: var(--space-md) 5.5rem calc(var(--space-lg) + env(safe-area-inset-bottom));
+    color: var(--on-green-soft);
+    font-size: var(--text-sm);
+    text-align: center;
+  }
+  [data-lb-count] { color: var(--on-green); font-variant-numeric: tabular-nums; flex: none; }
+  [data-lb-alt] { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; text-align: left; max-width: 40rem; }
+  .lb-btn {
+    position: absolute;
+    display: grid;
+    place-items: center;
+    width: 3rem;
+    height: 3rem;
+    border: 0;
+    border-radius: 50%;
+    background: rgb(255 255 255 / 0.1);
+    color: #fff;
+    transition: background-color 200ms ease;
+  }
+  .lb-btn:hover { background: rgb(255 255 255 / 0.2); }
+  .lb-btn:focus-visible { outline-color: #fff; }
+  .lb-btn :global(svg) { width: 1.35rem; height: 1.35rem; }
+  .lb-close { top: var(--space-md); right: var(--space-md); }
+  .lb-prev, .lb-next { bottom: calc(var(--space-sm) + env(safe-area-inset-bottom)); }
+  .lb-prev { left: var(--space-md); }
+  .lb-next { right: var(--space-md); }
+  @media (min-width: 60rem) {
+    .lb-stage { padding: 4.5rem 6rem 0; }
+    .lb-prev, .lb-next { top: 50%; bottom: auto; translate: 0 -50%; }
+    .lb-prev { left: var(--space-lg); }
+    .lb-next { right: var(--space-lg); }
+    .lb-caption { padding-inline: var(--space-lg); }
+  }
+</style>
+
+<script>
+  type Item = { src: string; alt: string };
+  const dialog = document.querySelector<HTMLDialogElement>('[data-lightbox-dialog]');
+  const dataEl = document.getElementById('lightbox-data');
+
+  if (dialog && dataEl) {
+    const items: Item[] = JSON.parse(dataEl.textContent || '[]');
+    const img = dialog.querySelector<HTMLImageElement>('[data-lb-img]')!;
+    const count = dialog.querySelector<HTMLElement>('[data-lb-count]')!;
+    const alt = dialog.querySelector<HTMLElement>('[data-lb-alt]')!;
+    let index = 0;
+    let opener: HTMLElement | null = null;
+
+    const show = (i: number) => {
+      index = (i + items.length) % items.length;
+      const item = items[index];
+      img.hidden = false;
+      img.src = item.src;
+      img.alt = item.alt;
+      count.textContent = `${index + 1} / ${items.length}`;
+      alt.textContent = item.alt;
+      // Warm the neighbours so next/previous feel instant.
+      [index + 1, index - 1].forEach((n) => {
+        const pre = new Image();
+        pre.src = items[(n + items.length) % items.length].src;
+      });
+    };
+
+    document.querySelectorAll<HTMLAnchorElement>('[data-lightbox]').forEach((link) => {
+      link.addEventListener('click', (e) => {
+        if (e.metaKey || e.ctrlKey || e.shiftKey) return;
+        e.preventDefault();
+        opener = link;
+        show(Number(link.dataset.lightbox));
+        dialog.showModal();
+      });
+    });
+
+    dialog.querySelector('[data-lb-close]')!.addEventListener('click', () => dialog.close());
+    dialog.querySelector('[data-lb-prev]')!.addEventListener('click', () => show(index - 1));
+    dialog.querySelector('[data-lb-next]')!.addEventListener('click', () => show(index + 1));
+    dialog.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowRight') show(index + 1);
+      if (e.key === 'ArrowLeft') show(index - 1);
+    });
+    dialog.addEventListener('click', (e) => {
+      if (e.target === dialog || (e.target as HTMLElement).classList.contains('lb-stage')) dialog.close();
+    });
+    dialog.addEventListener('close', () => opener?.focus());
+
+    // Swipe left/right on touch screens.
+    let startX = 0;
+    let startY = 0;
+    dialog.addEventListener('touchstart', (e) => {
+      startX = e.touches[0].clientX;
+      startY = e.touches[0].clientY;
+    }, { passive: true });
+    dialog.addEventListener('touchend', (e) => {
+      const dx = e.changedTouches[0].clientX - startX;
+      const dy = e.changedTouches[0].clientY - startY;
+      if (Math.abs(dx) > 50 && Math.abs(dx) > Math.abs(dy)) show(index + (dx < 0 ? 1 : -1));
+    }, { passive: true });
+  }
+</script>

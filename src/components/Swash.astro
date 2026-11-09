@@ -1,0 +1,33 @@
+---
+// A hand-drawn underline that draws itself in once, when the page loads.
+interface Props { class?: string }
+const { class: className } = Astro.props;
+---
+<svg class:list={['swash', className]} viewBox="0 0 300 24" preserveAspectRatio="none" aria-hidden="true">
+  <path d="M4 17C46 9 104 5 162 6.5c44 1.1 86 4.5 134 10.5" pathLength="1" />
+  <path d="M28 20.5c58-6 126-7.5 196-3" pathLength="1" />
+</svg>
+
+<style>
+  .swash {
+    position: absolute;
+    left: -2%;
+    bottom: -0.16em;
+    width: 104%;
+    height: 0.3em;
+    overflow: visible;
+    pointer-events: none;
+  }
+  .swash path {
+    fill: none;
+    stroke: var(--clay);
+    stroke-width: 4.5;
+    stroke-linecap: round;
+    stroke-dasharray: 1;
+    stroke-dashoffset: 1;
+    animation: swash-draw 900ms var(--ease-out) 450ms forwards;
+  }
+  .swash path + path { stroke-width: 2.75; animation-delay: 750ms; opacity: 0.85; }
+  @keyframes swash-draw { to { stroke-dashoffset: 0; } }
+  @media (prefers-reduced-motion: reduce) { .swash path { stroke-dashoffset: 0; animation: none; } }
+</style>
