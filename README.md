@@ -1,43 +1,63 @@
 # Knockbox Studios
 
-A buildless site with a homepage and dedicated Photo Booth page at /photo-booth/. Plain HTML and CSS with a small JavaScript photo carousel; no runtime dependencies. The primary action opens an email to info@knockbox.nz in the visitor's email application. The footer links to Instagram at @knockboxstudio. Google Fonts supplies Archivo for the wordmark and Asap for page text and labels, with local fallbacks.
+The landing site for Knockbox Studios’ smart event photo booth. It's built with [Astro](https://astro.build) as a fully static site and deployed on Cloudflare.
 
-## Preview
+## Develop
 
-From the repository root:
+Requires Node 22.23.4 or newer (`.node-version` pins Node 24 for Cloudflare builds).
 
 ```sh
-python -m http.server 4173 --bind 127.0.0.1 --directory public
+npm install
+npm run dev       # http://localhost:4321
+npm run build     # static output in dist/
+npm run preview   # serve dist/ locally
+npm run check     # type-check .astro and .ts files
 ```
 
-Visit http://127.0.0.1:4173.
+## Structure
 
-## Preview builds
+```
+src/
+  data/events.ts          ← all event content, photos, alt text, contact details
+  styles/global.css       ← design tokens (type scale, colour, space) + base styles
+  layouts/Layout.astro    ← <head>, fonts, SEO/OG tags, header + footer, scroll reveals
+  components/
+    Header, Footer, Logo, Icon, Swash, EventCard, Contact
+    home/                 ← homepage sections, in page order
+  pages/
+    index.astro           ← Hero → How it works → The booth → Events → FAQ → Contact
+    events/[slug].astro   ← one gallery page per event, with a lightbox
+    404.astro
+  assets/photos/<event>/  ← source photos; Astro generates responsive WebP at build time
+public/
+  favicon.svg, brand-mark.svg, _redirects, _headers
+docs/brand/               ← the bar-and-bowl logo concept board (not served)
+```
 
-`wrangler.jsonc` configures the `knockbox-website` Worker (static assets from `public`) and enables Worker Previews. Pushing any branch other than the production branch runs the build command and then `npx wrangler preview`, which publishes a Preview URL for that branch under the Worker's **Previews** section in the Cloudflare dashboard.
+### Adding an event
 
-## Cloudflare Pages
+1. Put the photos in `src/assets/photos/<event-slug>/`.
+2. Import them at the top of `src/data/events.ts` and add an entry to `events`, with a `title`, `kind`, `summary`, `cover`, `photos` (each with alt text) and, optionally, `setup` for behind-the-scenes shots.
 
-Import this repository into a Cloudflare Pages project:
+That's all. The homepage cards, the “Recently at” chips, the footer links and the `/events/<slug>/` gallery page are all generated from that entry.
 
-- Framework preset: None
-- Production branch: your production branch
-- Build command: `exit 0`
-- Build output directory: `public`
-- Root directory: repository root
+## Design system
 
-For a direct upload, upload the contents of `public`, with index.html at the deployment root. No Functions, Worker, secrets or environment variables are needed.
+Everything visual comes from the tokens at the top of `src/styles/global.css`:
 
-Reference: https://developers.cloudflare.com/pages/framework-guides/deploy-anything/
+- **Type:** Archivo (variable) for everything, with Instrument Serif italic as the accent voice for one or two words per heading. There are only six sizes (`--text-xs` … `--text-2xl`), all fluid between 360px and 1280px wide.
+- **Colour:** warm paper (`--paper`) with brand green (`--green`, taken from the logo), a deep green for dark bands, and one warm accent (`--clay`) for swashes and dots. `--sun` is used sparingly for highlights.
+- **Space and shape:** a fluid `--gutter` and `--section` rhythm, with radii scaling from `--radius-sm` up to `--radius-lg`.
+- **Motion:** gentle reveal-on-scroll and a hand-drawn swash under the hero word. Everything respects `prefers-reduced-motion`, and content stays visible without JavaScript. Photos never auto-scroll.
 
-## Design status
+The header logo is an inline SVG redrawn from the bar-and-bowl concept, so it stays crisp at every size. A final vector master is still to come.
 
-This is a first design direction for the studio's event photobooth and videography services. The header pairs the Archivo wordmark with the selected Bar and bowl lens-study concept. The raster concept is framed with CSS to show its symbol; a final vector master remains to be developed. Colour hex values are proposed interpretations of the named tokens, not supplied brand values.
+## Deploy (Cloudflare)
 
-Edit copy in `public/index.html` and design tokens in `public/styles.css`. Keep only one contact action. The SVG favicon uses a simplified Bar and bowl mark for clarity at small sizes.
+The site is plain static files in `dist/`.
 
-## Photo Booth
+**Workers Builds (current setup):** `wrangler.jsonc` points static assets at `./dist` and has a `build.command` of `npm run build`. Wrangler therefore builds the site itself before every `wrangler deploy` or `wrangler preview`, and no dashboard build command is needed. Non-production branches publish a Preview URL. Unknown paths serve `404.html`.
 
-The homepage features one service section with a carousel of past events: the NZIA 2026 Awards, Cheree and Jackson’s Wedding, and Abbie and Josh’s Wedding. Each labelled event card links directly to its gallery on /photo-booth/. A draggable slider, touch scrolling and keyboard controls let visitors browse at their own pace. The Photo Booth navigation and section title also link to /photo-booth/, which explains gesture controls, real-time uploads, the live guest gallery and easy downloads/sharing.
+**Cloudflare Pages (if you move to it):** use the Astro preset, build command `npm run build` and output directory `dist`.
 
-The Photo Booth page includes all nine supplied NZIA guest photos, three web-optimised setup photos and ten web-optimised wedding photos across the two weddings. Gallery images link to their standalone image files in public/assets/photo-booth/. Setup and wedding photos are resized, orientation-corrected versions of the supplied originals. These are showcase pages, not the live guest portal itself. Edit copy in public/index.html and public/photo-booth/index.html.
+Either way, `.node-version` pins Node 24. `public/_redirects` sends the old `/photo-booth/` URL to the homepage, and `public/_headers` sets long-lived caching on hashed assets. No Functions, secrets or environment variables are needed.

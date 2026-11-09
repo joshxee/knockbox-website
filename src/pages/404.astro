@@ -1,0 +1,28 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Icon from '../components/Icon.astro';
+import { events } from '../data/events';
+---
+<Layout title="Page not found — Knockbox Studios" description="This page has wandered off.">
+  <section class="section">
+    <div class="wrap nf">
+      <p class="eyebrow">404</p>
+      <h1 class="display">Missed <span class="accent">the shot.</span></h1>
+      <p class="lead">This page doesn’t exist, or it’s moved. Let’s get you back to the good times.</p>
+      <a class="btn btn--green" href="/"><Icon name="arrow-left" /> Back home</a>
+      <div class="elsewhere">
+        <p class="eyebrow">Or see the booth in action</p>
+        <ul>
+          {events.map((e) => <li><a class="text-link" href={`/events/${e.slug}/`}>{e.title}</a></li>)}
+        </ul>
+      </div>
+    </div>
+  </section>
+</Layout>
+
+<style>
+  .nf { display: grid; justify-items: start; gap: var(--space-lg); min-height: 50vh; align-content: center; }
+  .elsewhere { display: grid; gap: var(--space-xs); margin-top: var(--space-2xl); }
+  .elsewhere ul { list-style: none; padding: 0; display: flex; flex-wrap: wrap; gap: 0 var(--space-lg); }
+  .elsewhere a { padding-block: 0.6rem; }
+</style>

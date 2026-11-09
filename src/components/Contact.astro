@@ -1,0 +1,104 @@
+---
+import { Image } from 'astro:assets';
+import Icon from './Icon.astro';
+import { enquiryHref, featured, site } from '../data/events';
+---
+<section id="contact" class="contact" aria-labelledby="contact-title">
+  <div class="wrap panel">
+    <div class="copy" data-reveal>
+      <p class="eyebrow">Planning an event?</p>
+      <h2 id="contact-title" class="h2">Tell us what’s <span class="accent">happening.</span></h2>
+      <p class="lead">Send us the date, the place and what you have in mind. We’ll take it from there.</p>
+      <div class="ctas">
+        <a class="btn btn--paper" href={enquiryHref}><Icon name="mail" /> Email us</a>
+        <button
+          class="btn btn--outline copy-btn"
+          type="button"
+          data-copy={site.email}
+          aria-label={`Copy email address ${site.email}`}
+        >
+          <span class="copy-label"><Icon name="copy" /> {site.email}</span>
+          <span class="copied-label" aria-hidden="true"><Icon name="check" /> <span data-copy-result>Copied</span></span>
+        </button>
+        <span class="visually-hidden" role="status" data-copy-status></span>
+      </div>
+    </div>
+    <figure class="print snap" aria-hidden="true" data-reveal style="--reveal-delay:1">
+      <Image src={featured.contact.src} alt="" widths={[320, 480, 640, 960]} sizes="(min-width: 60rem) 24rem, 80vw" />
+    </figure>
+  </div>
+</section>
+
+<style>
+  /* A full-bleed dark band that flows straight into the footer. */
+  .contact {
+    position: relative;
+    padding-block: var(--section) clamp(3rem, 2rem + 4vw, 5rem);
+    background: var(--green-deep);
+    color: var(--on-green);
+    overflow: hidden;
+  }
+  .contact::before {
+    /* faint bar-and-bowl watermark */
+    content: '';
+    position: absolute;
+    right: -8rem;
+    bottom: -4rem;
+    width: clamp(22rem, 40vw, 40rem);
+    aspect-ratio: 56 / 40;
+    background: rgb(255 255 255 / 0.04);
+    -webkit-mask: url('/brand-mark.svg') center / contain no-repeat;
+    mask: url('/brand-mark.svg') center / contain no-repeat;
+  }
+  .panel { position: relative; display: grid; gap: var(--space-3xl); }
+  .copy { display: grid; gap: var(--space-md); justify-items: start; }
+  .eyebrow { color: var(--on-green-soft); }
+  .eyebrow::before { background: var(--sun); }
+  h2 { color: var(--on-green); }
+  .lead { color: var(--on-green-soft); }
+  .ctas { display: grid; gap: var(--space-sm); width: 100%; margin-top: var(--space-sm); }
+  .btn--outline { --btn-bg: transparent; --btn-fg: var(--on-green); box-shadow: inset 0 0 0 1.5px rgb(243 239 227 / 0.35); }
+  .btn--outline:hover { box-shadow: inset 0 0 0 1.5px var(--on-green); }
+  .copy-btn { display: inline-grid; }
+  .copy-btn > span { grid-area: 1 / 1; display: inline-flex; align-items: center; justify-content: center; gap: 0.5em; transition: opacity 200ms ease, transform 300ms var(--ease-out); }
+  .copied-label { opacity: 0; transform: translateY(0.4rem); }
+  .copy-btn.is-copied .copy-label { opacity: 0; transform: translateY(-0.4rem); }
+  .copy-btn.is-copied .copied-label { opacity: 1; transform: none; }
+  .btn:focus-visible { outline-color: var(--on-green); }
+
+  .snap {
+    width: min(86%, 24rem);
+    justify-self: center;
+    rotate: 3deg;
+  }
+
+  @media (min-width: 30rem) {
+    .ctas { display: flex; flex-wrap: wrap; width: auto; }
+  }
+  @media (min-width: 60rem) {
+    .panel { grid-template-columns: 1.4fr 1fr; align-items: center; }
+    .snap { justify-self: end; }
+  }
+</style>
+
+<script>
+  document.querySelectorAll<HTMLButtonElement>('[data-copy]').forEach((btn) => {
+    const status = btn.parentElement?.querySelector<HTMLElement>('[data-copy-status]');
+    const result = btn.querySelector<HTMLElement>('[data-copy-result]');
+    let timer: number | undefined;
+    btn.addEventListener('click', async () => {
+      const value = btn.dataset.copy ?? '';
+      let ok = true;
+      try {
+        await navigator.clipboard.writeText(value);
+      } catch {
+        ok = false;
+      }
+      if (result) result.textContent = ok ? 'Copied' : 'Couldn’t copy';
+      if (status) status.textContent = ok ? `Copied ${value} to the clipboard` : `Couldn’t copy. The address is ${value}`;
+      btn.classList.add('is-copied');
+      clearTimeout(timer);
+      timer = window.setTimeout(() => btn.classList.remove('is-copied'), 2200);
+    });
+  });
+</script>
