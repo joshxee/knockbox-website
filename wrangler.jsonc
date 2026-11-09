@@ -3,6 +3,11 @@
   // Must match the deployed Worker, so production deploys keep targeting it.
   "name": "knockbox-website",
   "compatibility_date": "2026-10-19",
+  // Build the Astro site before every deploy or preview upload, so dist/ exists
+  // whatever the build command in the Cloudflare dashboard is set to.
+  "build": {
+    "command": "npm run build"
+  },
   "assets": {
     "directory": "./dist",
     // Serve dist/404.html for unknown paths.
