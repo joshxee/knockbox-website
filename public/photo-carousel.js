@@ -7,6 +7,7 @@ if (gallery) {
   const updateControls = () => {
     const distance = viewport.scrollWidth - viewport.clientWidth;
     slider.disabled = distance <= 0;
+    gallery.querySelector('.photo-controls').hidden = distance <= 0;
     slider.value = distance > 0 ? Math.round(viewport.scrollLeft / distance * 1000) : 0;
   };
 
