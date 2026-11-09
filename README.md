@@ -1,6 +1,6 @@
 # Knockbox Studios
 
-A buildless site with a homepage and dedicated Photo Booth page at /photo-booth/. Plain HTML and CSS; no JavaScript or runtime dependencies. The primary action opens an email to info@knockbox.nz in the visitor's email application. The footer links to Instagram at @knockboxstudio. Google Fonts supplies Archivo for the wordmark and Asap for page text and labels, with local fallbacks.
+A buildless site with a homepage and dedicated Photo Booth page at /photo-booth/. Plain HTML and CSS with a small JavaScript photo carousel; no runtime dependencies. The primary action opens an email to info@knockbox.nz in the visitor's email application. The footer links to Instagram at @knockboxstudio. Google Fonts supplies Archivo for the wordmark and Asap for page text and labels, with local fallbacks.
 
 ## Preview
 
@@ -34,4 +34,4 @@ Edit copy in `public/index.html` and design tokens in `public/styles.css`. Keep 
 
 ## Photo Booth
 
-The homepage features one service section with a slowly scrolling strip of all nine NZIA 2026 Awards guest photos. A pause control and reduced-motion support keep the strip accessible. The Photo Booth navigation and section title both link to /photo-booth/, which explains gesture controls, real-time uploads, the live guest gallery and easy downloads/sharing. All nine supplied guest photos and three web-optimised setup photos are in public/assets/photo-booth/; gallery images link to their standalone image files. The setup photos are resized, orientation-corrected versions of the supplied originals. These are showcase pages, not the live guest portal itself. Edit page copy in public/index.html and public/photo-booth/index.html.
+The homepage features one service section with a manually browsed strip of all nine NZIA 2026 Awards guest photos. Previous/next buttons, touch scrolling and keyboard controls let visitors browse at their own pace, with reduced-motion support for button navigation. The Photo Booth navigation and section title both link to /photo-booth/, which explains gesture controls, real-time uploads, the live guest gallery and easy downloads/sharing. All nine supplied guest photos and three web-optimised setup photos are in public/assets/photo-booth/; gallery images link to their standalone image files. The setup photos are resized, orientation-corrected versions of the supplied originals. These are showcase pages, not the live guest portal itself. Edit page copy in public/index.html and public/photo-booth/index.html.

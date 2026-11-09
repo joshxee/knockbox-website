@@ -82,25 +82,15 @@ a:focus-visible { outline: 2px solid var(--focus); outline-offset: 5px; }
 .home-intro h2, .booth-intro h1 { font-size: clamp(40px, 5.4vw, 64px); line-height: 1.03; letter-spacing: -.045em; }
 .intro-copy { font-size: 18px; line-height: 1.65; color: var(--text-muted); }
 .event-gallery { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
-.home-photos { position: relative; }
-.photo-viewport { overflow: hidden; border-radius: var(--radius-s); }
-.photo-track { display: flex; width: max-content; animation: photo-scroll 140s linear infinite; }
-.photo-group { display: flex; gap: 16px; padding-right: 16px; }
-.photo-group img { flex: 0 0 auto; }
-.photo-motion-toggle { position: absolute; width: 1px; height: 1px; opacity: 0; }
-.photo-scroll-control { display: flex; align-items: center; gap: 8px; width: fit-content; min-height: 44px; margin-top: 4px; color: var(--text-muted); font-size: 13px; cursor: pointer; }
-.photo-scroll-control::before { content: ''; width: 14px; height: 14px; border: 1px solid var(--accent); border-radius: 2px; }
-.photo-motion-toggle:checked ~ .photo-scroll-control::before { background: var(--accent); box-shadow: inset 0 0 0 3px var(--surface); }
-.photo-motion-toggle:focus-visible ~ .photo-scroll-control { outline: 2px solid var(--focus); outline-offset: 2px; }
-.photo-motion-toggle:checked ~ .photo-viewport .photo-track, .photo-viewport:hover .photo-track { animation-play-state: paused; }
-@keyframes photo-scroll { to { transform: translateX(-50%); } }
+.photo-viewport { display: grid; grid-auto-flow: column; grid-auto-columns: clamp(240px, 30vw, 360px); gap: 16px; overflow-x: auto; scroll-snap-type: x mandatory; border-radius: var(--radius-s); }
+.photo-viewport img { scroll-snap-align: start; }
 .home-photos img, .event-gallery img { width: 100%; height: auto; display: block; aspect-ratio: 640 / 427; border-radius: var(--radius-s); }
-.home-photos .photo-group img { width: clamp(240px, 30vw, 360px); }
-@media (prefers-reduced-motion: reduce) {
-  .photo-track { animation: none; }
-  .photo-viewport { overflow-x: auto; }
-  .photo-group[aria-hidden], .photo-motion-toggle, .photo-scroll-control { display: none; }
-}
+.photo-controls { display: flex; justify-content: flex-end; gap: 8px; margin-top: 16px; }
+.photo-controls[hidden] { display: none; }
+.photo-button { display: inline-flex; align-items: center; justify-content: center; width: 44px; height: 44px; border: 1px solid var(--accent); border-radius: var(--radius-s); background: transparent; color: var(--accent); font-size: 22px; cursor: pointer; }
+.photo-button:hover:enabled { background: var(--accent-soft); }
+.photo-button:disabled { opacity: .35; cursor: default; }
+.photo-button:focus-visible, .photo-viewport:focus-visible { outline: 2px solid var(--focus); outline-offset: 4px; }
 .photo-caption { margin-top: 14px; color: var(--text-muted); font-size: 13px; line-height: 1.6; }
 .home-feature + .contact { border-top: 1px solid var(--border); }
 .contact h2 { font-size: 30px; }
