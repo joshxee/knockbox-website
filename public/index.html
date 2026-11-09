@@ -10,8 +10,8 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;600&family=Asap:wght@400;500;600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="/styles.css?v=4">
-    <script src="/photo-carousel.js" defer></script>
+    <link rel="stylesheet" href="/styles.css?v=5">
+    <script src="/photo-carousel.js?v=2" defer></script>
   </head>
   <body>
     <a class="skip-link" href="#main">Skip to content</a>
@@ -48,8 +48,7 @@
               <img src="/assets/photo-booth/NZIAAwards-74.jpg" alt="Three guests posing with their awards at the NZIA 2026 Awards" width="640" height="427" decoding="async">
             </div>
             <div class="photo-controls" hidden>
-              <button type="button" class="photo-button" data-photo-previous aria-label="Previous photos" aria-controls="homepage-photos" disabled><span aria-hidden="true">&larr;</span></button>
-              <button type="button" class="photo-button" data-photo-next aria-label="Next photos" aria-controls="homepage-photos"><span aria-hidden="true">&rarr;</span></button>
+              <input class="photo-slider" type="range" min="0" max="1000" value="0" step="1" aria-label="Browse event photos" aria-controls="homepage-photos">
             </div>
           </div>
         </section>
