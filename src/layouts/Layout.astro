@@ -1,5 +1,5 @@
 ---
-import '@fontsource-variable/archivo/wdth.css';
+import '@fontsource-variable/archivo/wght.css';
 import '@fontsource/instrument-serif/latin-400-italic.css';
 import '../styles/global.css';
 
@@ -7,6 +7,7 @@ import { getImage } from 'astro:assets';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import shareImage from '../assets/photos/abbie-and-josh/wedding-73.jpg';
+import archivoLatin from '@fontsource-variable/archivo/files/archivo-latin-wght-normal.woff2?url';
 
 interface Props {
   title: string;
@@ -28,6 +29,7 @@ const ogUrl = new URL(og.src, Astro.site);
     <link rel="canonical" href={canonical} />
     <meta name="theme-color" content="#f6f2e8" />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="preload" href={archivoLatin} as="font" type="font/woff2" crossorigin />
 
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content="Knockbox Studios" />

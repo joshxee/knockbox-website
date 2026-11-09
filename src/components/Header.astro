@@ -1,7 +1,7 @@
 ---
 import Logo from './Logo.astro';
 import Icon from './Icon.astro';
-import { enquiryHref } from '../data/events';
+import { enquiryHref, site } from '../data/events';
 
 const links = [
   { href: '/#how-it-works', label: 'How it works' },
@@ -41,6 +41,10 @@ const links = [
           </li>
         ))}
       </ul>
+      <div class="menu-foot">
+        <a class="btn btn--green" href={enquiryHref}>Enquire now <Icon name="arrow-up-right" /></a>
+        <a class="text-link" href={`mailto:${site.email}`}>{site.email}</a>
+      </div>
     </nav>
   </div>
 </header>
@@ -112,7 +116,10 @@ const links = [
     height: calc(100dvh - var(--header-h));
     overflow-y: auto;
   }
-  .mobile-menu ul { list-style: none; padding: var(--space-md) 0 var(--space-2xl); }
+  .mobile-menu ul { list-style: none; padding: var(--space-md) 0 var(--space-xl); }
+  .menu-foot { display: grid; gap: var(--space-md); justify-items: start; padding-bottom: var(--space-2xl); animation: menu-in 500ms var(--ease-out) 220ms both; }
+  .menu-foot .btn { width: 100%; }
+  .menu-foot .text-link { padding-block: 0.5rem; }
   .mobile-menu li {
     border-bottom: 1px solid var(--line);
     animation: menu-in 500ms var(--ease-out) both;
@@ -124,7 +131,7 @@ const links = [
     justify-content: space-between;
     padding-block: 1.1rem;
     color: var(--ink);
-    font-size: 1.75rem;
+    font-size: var(--text-xl);
     font-weight: 620;
     letter-spacing: -0.03em;
     text-decoration: none;
@@ -156,6 +163,10 @@ const links = [
       toggle.setAttribute('aria-expanded', String(open));
       menu.hidden = !open;
       document.documentElement.style.overflow = open ? 'hidden' : '';
+      // Keep keyboard and screen-reader focus inside the open menu.
+      document.querySelectorAll<HTMLElement>('main, footer, .site-header .home, .site-header .actions > .btn').forEach((el) => {
+        el.inert = open;
+      });
     };
     toggle.addEventListener('click', () => setOpen(toggle.getAttribute('aria-expanded') !== 'true'));
     menu.addEventListener('click', (e) => {

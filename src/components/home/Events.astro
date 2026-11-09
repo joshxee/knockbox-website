@@ -12,9 +12,9 @@ import { events } from '../../data/events';
   </div>
 
   <div class="rail-wrap">
-    <ul class="rail wrap" aria-label="Past events">
-      {events.map((e, i) => (
-        <li data-reveal style={`--reveal-delay:${i}`}><EventCard event={e} /></li>
+    <ul class="rail wrap" aria-label="Past events" data-reveal>
+      {events.map((e) => (
+        <li><EventCard event={e} /></li>
       ))}
     </ul>
   </div>

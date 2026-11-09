@@ -11,6 +11,7 @@ import nzia74 from '../assets/photos/nzia-2026-awards/NZIAAwards-74.jpg';
 import nzia76 from '../assets/photos/nzia-2026-awards/NZIAAwards-76.jpg';
 import nziaSetup from '../assets/photos/nzia-2026-awards/nzia-booth-and-backdrop.jpg';
 import nziaQr from '../assets/photos/nzia-2026-awards/nzia-guest-gallery-qr.jpg';
+import nziaQrDetail from '../assets/photos/nzia-2026-awards/nzia-guest-gallery-qr-detail.jpg';
 import nziaPrep from '../assets/photos/nzia-2026-awards/nzia-booth-preparation.jpg';
 
 import cj22 from '../assets/photos/cheree-and-jackson/wedding-22.jpg';
@@ -101,7 +102,7 @@ export const events: EventStory[] = [
     kind: 'Wedding',
     summary:
       'Heart-shaped sunglasses, a white sofa and fairy lights, with every photo landing in the live guest gallery.',
-    cover: { src: aj73, alt: 'Two wedding guests wearing heart-shaped sunglasses and making finger-heart gestures' },
+    cover: { src: aj46, alt: 'A guest posing in heart-shaped sunglasses at Abbie and Josh’s wedding' },
     photos: [
       { src: aj73, alt: 'Two guests making finger-heart gestures in heart-shaped sunglasses at Abbie and Josh’s wedding' },
       { src: aj100, alt: 'Four guests laughing together on a white sofa at Abbie and Josh’s wedding' },
@@ -118,17 +119,17 @@ export const getEvent = (slug: string) => events.find((e) => e.slug === slug);
 export const featured = {
   heroPrints: [
     { src: aj147, alt: 'Two wedding guests posing in heart-shaped sunglasses on a white sofa' },
-    { src: nzia43, alt: 'A group of guests posing together at the NZIA 2026 Awards' },
     { src: cj189, alt: 'The bride and friends posing in colourful sunglasses' },
+    { src: aj35, alt: 'Five wedding guests celebrating with drinks and sunglasses' },
   ],
   steps: {
-    gesture: { src: nzia48, alt: 'A guest pointing at the camera while another raises his hand at the NZIA 2026 Awards' },
+    gesture: { src: aj73, alt: 'Two wedding guests in heart-shaped sunglasses making finger-heart gestures at the camera' },
     pose: { src: aj100, alt: 'Four guests laughing together on a white sofa' },
-    share: { src: nziaQr, alt: 'The booth’s “Scan to view event photos” sign with a QR code' },
+    share: { src: nziaQrDetail, alt: 'The booth’s “Scan to view event photos” sign with a QR code' },
   },
   setup: { src: nziaSetup, alt: 'The Knockbox photo booth and umbrella light facing an awards backdrop' },
-  prep: { src: nziaPrep, alt: 'A Knockbox team member setting up the booth before an event' },
-  gallery: [aj35, cj22, nzia74, aj46, cj68, nzia20],
+  contact: { src: cj28, alt: 'Two wedding guests posing together on leather armchairs' },
+  gallery: [aj35, cj28, nzia74, cj68, aj147, nzia20, cj143, aj100],
 };
 
 export const site = {

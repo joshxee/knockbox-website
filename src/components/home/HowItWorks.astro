@@ -24,7 +24,7 @@ const steps = [
   <div class="wrap">
     <div class="section-head" data-reveal>
       <p class="eyebrow">How it works</p>
-      <h2 id="how-title" class="h2">Three steps. <span class="accent">No instructions</span> needed.</h2>
+      <h2 id="how-title" class="h2">Three steps. <span class="accent nowrap">No instructions</span> needed.</h2>
     </div>
 
     <ol class="steps">
@@ -59,6 +59,8 @@ const steps = [
   .step {
     display: grid;
     gap: var(--space-lg);
+    grid-template-rows: auto 1fr;
+    align-content: start;
     padding: var(--space-sm) var(--space-sm) var(--space-xl);
     border-radius: var(--radius-lg);
     background: var(--card);
@@ -71,7 +73,6 @@ const steps = [
     object-fit: cover;
     transition: transform 900ms var(--ease-out);
   }
-  .step:nth-child(3) .media :global(img) { object-position: 50% 62%; }
   .step:hover .media :global(img) { transform: scale(1.04); }
   .num {
     position: absolute;
@@ -92,14 +93,14 @@ const steps = [
   }
   .text { display: grid; gap: var(--space-xs); padding-inline: var(--space-md); }
   .text p { max-width: 30rem; }
+  .nowrap { white-space: nowrap; }
 
   @media (min-width: 40rem) {
     .steps { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-    .step:last-child { grid-column: 1 / -1; grid-template-columns: 1fr 1fr; align-items: center; padding-bottom: var(--space-sm); }
+    .step:last-child { grid-column: 1 / -1; grid-template-columns: 1fr 1fr; grid-template-rows: none; align-items: center; padding-bottom: var(--space-sm); }
   }
   @media (min-width: 60rem) {
     .steps { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--space-lg); }
-    .step:last-child { grid-column: auto; grid-template-columns: none; align-items: start; padding-bottom: var(--space-xl); }
-    .media :global(img) { aspect-ratio: 4 / 4.4; }
+    .step:last-child { grid-column: auto; grid-template-columns: none; grid-template-rows: auto 1fr; align-items: start; padding-bottom: var(--space-xl); }
   }
 </style>

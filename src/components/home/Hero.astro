@@ -17,7 +17,7 @@ import { enquiryHref, events, featured } from '../../data/events';
         phone. Download, share, done, while the night is still happening.
       </p>
       <div class="ctas">
-        <a class="btn btn--green" href={enquiryHref}>Check your date <Icon name="arrow-up-right" /></a>
+        <a class="btn btn--green" href={enquiryHref}>Enquire now <Icon name="arrow-up-right" /></a>
         <a class="btn btn--ghost" href="#events">See past events</a>
       </div>
     </div>
@@ -29,7 +29,7 @@ import { enquiryHref, events, featured } from '../../data/events';
             src={p.src}
             alt=""
             widths={[320, 480, 640, 960]}
-            sizes="(min-width: 60rem) 28vw, 62vw"
+            sizes="(min-width: 48rem) 34vw, 62vw"
             loading="eager"
             fetchpriority={i === 0 ? 'high' : 'auto'}
           />
@@ -44,19 +44,15 @@ import { enquiryHref, events, featured } from '../../data/events';
   </div>
 
   <div class="wrap">
-    <div class="recent">
-      <p class="recent-label">Recently at</p>
-      <ul>
+    <a class="recent" href="#events">
+      <span class="faces" aria-hidden="true">
         {events.map((e) => (
-          <li>
-            <a href={`/events/${e.slug}/`}>
-              <Image src={e.cover.src} alt="" width={64} height={64} widths={[64, 128]} sizes="2rem" class="thumb" />
-              <span>{e.title}</span>
-            </a>
-          </li>
+          <Image src={e.cover.src} alt="" width={96} height={96} widths={[48, 96]} sizes="2.25rem" />
         ))}
-      </ul>
-    </div>
+      </span>
+      <span class="recent-text">Recently at the <strong>NZIA 2026 Awards</strong> and two weddings</span>
+      <Icon name="arrow-right" class="recent-arrow" />
+    </a>
   </div>
 </section>
 
@@ -129,36 +125,35 @@ import { enquiryHref, events, featured } from '../../data/events';
   }
   @keyframes sticker-in { from { opacity: 0; transform: rotate(-20deg) scale(0.6); } }
 
-  /* Recently at */
+  /* Recently at: one quiet line of proof */
   .recent {
-    display: grid;
-    gap: var(--space-sm);
-    margin-top: clamp(3.5rem, 2.5rem + 4vw, 6rem);
-    padding-top: var(--space-lg);
-    border-top: 1px solid var(--line);
-  }
-  .recent-label { font-size: var(--text-xs); font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-faint); }
-  .recent ul { list-style: none; padding: 0; display: flex; flex-wrap: wrap; gap: var(--space-xs); }
-  .recent a {
-    display: inline-flex;
+    display: flex;
     align-items: center;
-    gap: 0.6rem;
-    padding: 0.3rem 0.95rem 0.3rem 0.3rem;
-    border-radius: var(--pill);
-    background: var(--card);
-    box-shadow: inset 0 0 0 1px var(--line);
-    color: var(--ink);
+    gap: var(--space-sm);
+    margin-top: clamp(3rem, 2.5rem + 3vw, 5rem);
+    padding-block: var(--space-lg);
+    border-top: 1px solid var(--line);
+    color: var(--ink-soft);
     font-size: var(--text-sm);
-    font-weight: 520;
+    line-height: 1.35;
     text-decoration: none;
-    transition: box-shadow 200ms ease, transform 300ms var(--ease-out);
   }
-  .recent a:hover { box-shadow: inset 0 0 0 1px var(--ink); transform: translateY(-1px); }
-  .recent :global(.thumb) { width: 2rem; height: 2rem; border-radius: 50%; object-fit: cover; }
+  .recent strong { color: var(--ink); font-weight: 600; }
+  .faces { display: flex; flex: none; }
+  .faces :global(img) {
+    width: 2.25rem;
+    height: 2.25rem;
+    border-radius: 50%;
+    object-fit: cover;
+    box-shadow: 0 0 0 2px var(--paper);
+  }
+  .faces :global(img + img) { margin-left: -0.6rem; }
+  .recent :global(.recent-arrow) { width: 1.1rem; height: 1.1rem; flex: none; color: var(--clay); transition: transform 300ms var(--ease-out); }
+  .recent:hover :global(.recent-arrow) { transform: translateX(3px); }
+  .recent:hover .recent-text { text-decoration: underline; text-decoration-color: var(--line-strong); text-underline-offset: 0.25em; }
 
-  @media (min-width: 60rem) {
+  @media (min-width: 48rem) {
     .grid { grid-template-columns: 1.25fr 1fr; }
-    .prints { width: 100%; margin-right: -1rem; }
-    .recent { grid-template-columns: auto 1fr; align-items: center; gap: var(--space-xl); }
+    .prints { width: 100%; }
   }
 </style>
