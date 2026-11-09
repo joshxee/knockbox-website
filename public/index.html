@@ -10,7 +10,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;600&family=Asap:wght@400;500;600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="/styles.css">
+    <link rel="stylesheet" href="/styles.css?v=3">
   </head>
   <body>
     <a class="skip-link" href="#main">Skip to content</a>
@@ -27,20 +27,42 @@
         <section class="home-feature" aria-labelledby="photo-booth-title">
           <div class="feature-heading">
             <h1 id="photo-booth-title"><a class="section-title-link" href="/photo-booth/">Photo Booth <span aria-hidden="true">&nearr;</span></a></h1>
-            <p class="label">Smart booth. Real moments.</p>
           </div>
           <div class="home-intro">
             <h2>Good times.<br>Ready to share.</h2>
             <div>
               <p class="intro-copy">A smart photo booth for your next event. Start with a gesture, strike a pose and find your photos in the live guest gallery. Download your favourites and share them to social media while the night is still happening.</p>
-              <p class="feature-summary">Gesture controls &middot; Real-time uploads &middot; Easy downloads</p>
-              <a class="text-link" href="/photo-booth/">Meet the photo booth <span aria-hidden="true">&nearr;</span></a>
             </div>
           </div>
           <div class="home-photos">
-            <img src="/assets/photo-booth/NZIAAwards-48.jpg" alt="Two guests celebrating with playful poses at the NZIA 2026 Awards" width="640" height="427" decoding="async">
-            <img src="/assets/photo-booth/NZIAAwards-43.jpg" alt="A group of eight guests at the NZIA 2026 Awards" width="640" height="427" decoding="async">
-            <img src="/assets/photo-booth/NZIAAwards-76.jpg" alt="Four guests celebrating with awards at NZIA 2026" width="640" height="427" decoding="async">
+            <input class="photo-motion-toggle" type="checkbox" id="pause-photos">
+            <div class="photo-viewport">
+              <div class="photo-track">
+                <div class="photo-group">
+                  <img src="/assets/photo-booth/NZIAAwards-48.jpg" alt="Two guests celebrating with playful poses at the NZIA 2026 Awards" width="640" height="427" decoding="async">
+                  <img src="/assets/photo-booth/NZIAAwards-43.jpg" alt="A group of eight guests at the NZIA 2026 Awards" width="640" height="427" decoding="async">
+                  <img src="/assets/photo-booth/NZIAAwards-76.jpg" alt="Four guests celebrating with awards and a magazine at the NZIA 2026 Awards" width="640" height="427" decoding="async">
+                  <img src="/assets/photo-booth/NZIAAwards-20.jpg" alt="Four guests posing together at the NZIA 2026 Awards" width="640" height="427" decoding="async">
+                  <img src="/assets/photo-booth/NZIAAwards-23.jpg" alt="Two guests shaking hands at the NZIA 2026 Awards" width="640" height="427" decoding="async">
+                  <img src="/assets/photo-booth/NZIAAwards-49.jpg" alt="Three guests posing together at the NZIA 2026 Awards" width="640" height="427" decoding="async">
+                  <img src="/assets/photo-booth/NZIAAwards-54.jpg" alt="Six guests gathered together at the NZIA 2026 Awards" width="640" height="427" decoding="async">
+                  <img src="/assets/photo-booth/NZIAAwards-58.jpg" alt="Three guests smiling together at the NZIA 2026 Awards" width="640" height="427" decoding="async">
+                  <img src="/assets/photo-booth/NZIAAwards-74.jpg" alt="Three guests posing with their awards at the NZIA 2026 Awards" width="640" height="427" decoding="async">
+                </div>
+                <div class="photo-group" aria-hidden="true">
+                  <img src="/assets/photo-booth/NZIAAwards-48.jpg" alt="" width="640" height="427" decoding="async">
+                  <img src="/assets/photo-booth/NZIAAwards-43.jpg" alt="" width="640" height="427" decoding="async">
+                  <img src="/assets/photo-booth/NZIAAwards-76.jpg" alt="" width="640" height="427" decoding="async">
+                  <img src="/assets/photo-booth/NZIAAwards-20.jpg" alt="" width="640" height="427" decoding="async">
+                  <img src="/assets/photo-booth/NZIAAwards-23.jpg" alt="" width="640" height="427" decoding="async">
+                  <img src="/assets/photo-booth/NZIAAwards-49.jpg" alt="" width="640" height="427" decoding="async">
+                  <img src="/assets/photo-booth/NZIAAwards-54.jpg" alt="" width="640" height="427" decoding="async">
+                  <img src="/assets/photo-booth/NZIAAwards-58.jpg" alt="" width="640" height="427" decoding="async">
+                  <img src="/assets/photo-booth/NZIAAwards-74.jpg" alt="" width="640" height="427" decoding="async">
+                </div>
+              </div>
+            </div>
+            <label class="photo-scroll-control" for="pause-photos">Pause photo scrolling</label>
           </div>
           <p class="photo-caption">A few moments from the NZIA 2026 Awards.</p>
         </section>
