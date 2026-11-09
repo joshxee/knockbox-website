@@ -56,17 +56,8 @@ The header logo is an inline SVG redrawn from the bar-and-bowl concept, so it st
 
 The site is plain static files in `dist/`.
 
-**Cloudflare Pages:** in the project's *Settings → Builds*, set:
+**Workers Builds (current setup):** `wrangler.jsonc` points static assets at `./dist` and has a `build.command` of `npm run build`. Wrangler therefore builds the site itself before every `wrangler deploy` or `wrangler preview`, and no dashboard build command is needed. Non-production branches publish a Preview URL. Unknown paths serve `404.html`.
 
-| Setting | Value |
-| --- | --- |
-| Framework preset | Astro |
-| Build command | `npm run build` |
-| Build output directory | `dist` |
-| Root directory | *(repository root)* |
+**Cloudflare Pages (if you move to it):** use the Astro preset, build command `npm run build` and output directory `dist`.
 
-Pages reads `.node-version` to pick Node 24. `public/_redirects` sends the old `/photo-booth/` URL to the homepage, and `public/_headers` sets long-lived caching on hashed assets.
-
-**Workers Builds / preview URLs:** `wrangler.jsonc` points static assets at `./dist` and serves `404.html` for unknown paths. Set the build command to `npm run build`. Non-production branches then publish a Preview URL via `npx wrangler preview`.
-
-No Functions, secrets or environment variables are needed.
+Either way, `.node-version` pins Node 24. `public/_redirects` sends the old `/photo-booth/` URL to the homepage, and `public/_headers` sets long-lived caching on hashed assets. No Functions, secrets or environment variables are needed.
